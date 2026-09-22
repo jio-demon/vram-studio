@@ -4,30 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>文章 · 显存制造</title>
+<meta name="theme-color" content="#0f0f11">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">跳到主要内容</a>
+
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
-    <nav class="nav-links" id="nav-links"></nav>
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span id="brand-name">显存制造</span>
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="主导航"></nav>
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
-<div class="progress" id="progress"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<main id="main">
 
 <section class="block">
   <div class="wrap">
     <div class="post-layout">
       <article class="prose" id="post"></article>
-      <aside class="toc" id="toc"></aside>
+      <aside class="toc" id="toc" aria-label="本文目录"></aside>
     </div>
-    <div style="margin-top:48px"><a class="btn btn-ghost" href="blog.html">← 返回笔记列表</a></div>
+    <div style="margin-top:var(--sp-12)">
+      <a class="btn btn-ghost" href="blog.html">← 返回笔记列表</a>
+    </div>
   </div>
 </section>
 
-<button class="totop" id="totop" aria-label="回到顶部">↑</button>
+</main>
+
+<button class="totop" id="totop" type="button" aria-label="回到顶部">↑</button>
 
 <footer>
   <div class="wrap footer-inner">

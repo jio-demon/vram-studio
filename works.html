@@ -4,38 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>作品 · 显存制造</title>
+<meta name="description" content="用 ComfyUI 与 MiniMax H3 生成的图像与视频作品，附完整提示词与采样参数。">
+<meta name="theme-color" content="#0f0f11">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">跳到主要内容</a>
+
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
-    <nav class="nav-links" id="nav-links"></nav>
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span id="brand-name">显存制造</span>
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="主导航"></nav>
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
+<main id="main">
+
 <section class="block">
   <div class="wrap">
-    <div class="block-head"><h2>全部作品</h2><span class="more" id="count"></span></div>
-    <div class="filters">
-      <button class="chip active" data-f="all">全部</button>
-      <button class="chip" data-f="image">图像</button>
-      <button class="chip" data-f="video">视频</button>
+    <div class="block-head">
+      <h2>全部作品</h2>
+      <span class="more" id="count"></span>
+    </div>
+    <div class="filters" role="group" aria-label="按类型筛选">
+      <button class="chip active" data-f="all" type="button">全部</button>
+      <button class="chip" data-f="image" type="button">图像</button>
+      <button class="chip" data-f="video" type="button">视频</button>
     </div>
     <div class="grid" id="grid"></div>
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap footer-inner">
     <span>© 2026 <span class="fn-brand"></span></span>
-    <span>点开任意作品可查看提示词与参数</span>
+    <span class="footer-meta">点开任意作品可查看提示词与参数</span>
   </div>
 </footer>
 
-<div class="modal" id="modal">
-  <button class="modal-close">×</button>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <button class="modal-close" type="button" aria-label="关闭">×</button>
   <div class="modal-box" id="modal-body"></div>
 </div>
 
@@ -44,16 +62,27 @@
 <script>
 mountNav("works.html");
 $$(".fn-brand").forEach(e => (e.textContent = SITE.name));
-renderWorks("#grid", WORKS);
-document.getElementById("count").textContent = WORKS.length + " 件";
+
+function applyFilter(f) {
+  const items = f === "all" ? WORKS : WORKS.filter(w => w.type === f);
+  renderWorks("#grid", items);
+  document.getElementById("count").textContent =
+    items.length + (f === "all" ? " 件" : f === "image" ? " 件图像" : " 件视频");
+}
+
 $$(".chip").forEach(c => {
   c.addEventListener("click", () => {
-    $$(".chip").forEach(x => x.classList.remove("active"));
+    $$(".chip").forEach(x => {
+      x.classList.remove("active");
+      x.setAttribute("aria-pressed", "false");
+    });
     c.classList.add("active");
-    const f = c.dataset.f;
-    renderWorks("#grid", f === "all" ? WORKS : WORKS.filter(w => w.type === f));
+    c.setAttribute("aria-pressed", "true");
+    applyFilter(c.dataset.f);
   });
 });
+
+applyFilter("all");
 </script>
 </body>
 </html>

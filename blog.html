@@ -4,29 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>笔记 · 显存制造</title>
+<meta name="description" content="本地 AI 出图的实战记录：硬件改装、提示词写法、ComfyUI 工作流与服务器部署。">
+<meta name="theme-color" content="#0f0f11">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">跳到主要内容</a>
+
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
-    <nav class="nav-links" id="nav-links"></nav>
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span id="brand-name">显存制造</span>
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="主导航"></nav>
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
+<main id="main">
+
 <section class="block">
   <div class="wrap">
-    <div class="block-head"><h2>折腾笔记</h2><span class="more" id="count"></span></div>
-    <div class="filters" id="cat-filters"></div>
+    <div class="block-head">
+      <h2>折腾笔记</h2>
+      <span class="more" id="count"></span>
+    </div>
+    <div class="filters" id="cat-filters" role="group" aria-label="按分类筛选"></div>
     <div class="post-list" id="posts"></div>
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap footer-inner">
     <span>© 2026 <span class="fn-brand"></span></span>
-    <span>硬件 · 提示词 · 工作流 · 部署</span>
+    <span class="footer-meta">硬件 · 提示词 · 工作流 · 部署</span>
   </div>
 </footer>
 
@@ -39,7 +57,7 @@ $$(".fn-brand").forEach(e => (e.textContent = SITE.name));
 const cats = ["全部", ...new Set(POSTS.map(p => p.category))];
 const bar = document.getElementById("cat-filters");
 bar.innerHTML = cats
-  .map((c, i) => `<button class="chip${i === 0 ? " active" : ""}" data-c="${c}">${c}</button>`)
+  .map((c, i) => `<button class="chip${i === 0 ? " active" : ""}" data-c="${c}" type="button" aria-pressed="${i === 0}">${c}</button>`)
   .join("");
 
 function applyCat(c) {
@@ -51,8 +69,12 @@ function applyCat(c) {
 
 $$(".chip", bar).forEach(chip => {
   chip.addEventListener("click", () => {
-    $$(".chip", bar).forEach(x => x.classList.remove("active"));
+    $$(".chip", bar).forEach(x => {
+      x.classList.remove("active");
+      x.setAttribute("aria-pressed", "false");
+    });
     chip.classList.add("active");
+    chip.setAttribute("aria-pressed", "true");
     applyCat(chip.dataset.c);
   });
 });

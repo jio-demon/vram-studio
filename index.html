@@ -5,16 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>显存制造 · AI 作品集与折腾笔记</title>
 <meta name="description" content="用 ComfyUI 与 MiniMax H3 做出的图与视频，以及本地 AI 出片的踩坑记录。">
+<meta name="theme-color" content="#0f0f11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">跳到主要内容</a>
+
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
-    <nav class="nav-links" id="nav-links"></nav>
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span id="brand-name">显存制造</span>
+    </a>
+    <nav class="nav-links" id="nav-links" aria-label="主导航"></nav>
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<main id="main">
 
 <section class="hero">
   <div class="wrap">
@@ -23,17 +37,32 @@
         <span class="hero-eyebrow">AI 作品集 · 本地出片实验室</span>
         <h1>用 22GB 显存，<br><span class="grad">把想法渲染成画面</span></h1>
         <p class="lead" id="hero-intro"></p>
-        <a class="btn btn-primary" href="works.html">浏览作品</a>
-        <a class="btn btn-ghost" href="blog.html" style="margin-left:10px">读折腾笔记</a>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="works.html">浏览作品</a>
+          <a class="btn btn-ghost" href="blog.html">读折腾笔记</a>
+        </div>
         <div class="hero-stats">
-          <div><div class="stat-num" id="stat-works">0</div><div class="stat-label">已发布作品</div></div>
-          <div><div class="stat-num" id="stat-posts">0</div><div class="stat-label">篇技术笔记</div></div>
-          <div><div class="stat-num">22GB</div><div class="stat-label">本地显存</div></div>
+          <div>
+            <div class="stat-num" id="stat-works">0</div>
+            <div class="stat-label">已发布作品</div>
+          </div>
+          <div>
+            <div class="stat-num" id="stat-posts">0</div>
+            <div class="stat-label">篇技术笔记</div>
+          </div>
+          <div>
+            <div class="stat-num">22GB</div>
+            <div class="stat-label">本地显存</div>
+          </div>
         </div>
       </div>
       <div class="hero-art">
-        <img class="main" src="assets/works/w1.jpg" alt="雨夜霓虹街角">
-        <img class="float" src="assets/works/w5.jpg" alt="机械蜂鸟">
+        <div class="art-main">
+          <img src="assets/works/w1.jpg" alt="雨夜霓虹街角的赛博朋克插画" width="1024" height="1024" fetchpriority="high">
+        </div>
+        <div class="art-float">
+          <img src="assets/works/w5.jpg" alt="机械蜂鸟停在指尖的微距特写" width="1024" height="1024">
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +78,7 @@
   </div>
 </section>
 
-<section class="block" style="padding-top:0">
+<section class="block tight">
   <div class="wrap">
     <div class="block-head">
       <h2>最新笔记</h2>
@@ -59,15 +88,17 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap footer-inner">
     <span>© 2026 <span class="fn-brand"></span> · 由一台 2 核 2G 的小服务器托管</span>
-    <span>ComfyUI · MiniMax H3 · Ubuntu</span>
+    <span class="footer-meta">ComfyUI · MiniMax H3 · Caddy · Ubuntu</span>
   </div>
 </footer>
 
-<div class="modal" id="modal">
-  <button class="modal-close">×</button>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <button class="modal-close" type="button" aria-label="关闭">×</button>
   <div class="modal-box" id="modal-body"></div>
 </div>
 
