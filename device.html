@@ -525,7 +525,7 @@
     setText("net-rate", "↑" + fmtRate(nw.up) + " ↓" + fmtRate(nw.down));
     setText("net-up", fmtRate(nw.up));
     setText("net-down", fmtRate(nw.down));
-    setText("net-total", "↑" + fmtBytes(nw.sent) + " · ↓" + fmtBytes(nw.recv));
+    setText("net-total", "↑" + fmtBytes(nw.sent_total) + " · ↓" + fmtBytes(nw.recv_total));
 
     /* 系统 */
     var s = d.system || {};
