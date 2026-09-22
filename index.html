@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>显存制造 · AI 作品集与折腾笔记</title>
+<meta name="description" content="用 ComfyUI 与 MiniMax H3 做出的图与视频，以及本地 AI 出片的踩坑记录。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
+    <nav class="nav-links" id="nav-links"></nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>用 22GB 显存，<br>把想法渲染成画面</h1>
+    <p class="lead" id="hero-intro"></p>
+    <a class="btn btn-primary" href="works.html">浏览作品</a>
+    <a class="btn btn-ghost" href="blog.html" style="margin-left:10px">读折腾笔记</a>
+    <div class="hero-stats">
+      <div><div class="stat-num" id="stat-works">0</div><div class="stat-label">已发布作品</div></div>
+      <div><div class="stat-num" id="stat-posts">0</div><div class="stat-label">篇技术笔记</div></div>
+      <div><div class="stat-num">22GB</div><div class="stat-label">本地显存</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>精选作品</h2>
+      <a class="more" href="works.html">查看全部 →</a>
+    </div>
+    <div class="grid" id="featured"></div>
+  </div>
+</section>
+
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="block-head">
+      <h2>最新笔记</h2>
+      <a class="more" href="blog.html">全部文章 →</a>
+    </div>
+    <div class="post-list" id="latest"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 <span class="fn-brand"></span> · 由一台 2 核 2G 的小服务器托管</span>
+    <span>ComfyUI · MiniMax H3 · Ubuntu</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal">
+  <button class="modal-close">×</button>
+  <div class="modal-box" id="modal-body"></div>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+mountNav("index.html");
+document.getElementById("hero-intro").textContent = SITE.intro;
+document.getElementById("stat-works").textContent = WORKS.length;
+document.getElementById("stat-posts").textContent = POSTS.length;
+$$(".fn-brand").forEach(e => (e.textContent = SITE.name));
+renderWorks("#featured", WORKS.slice(0, 6));
+renderPostList("#latest", POSTS.slice(0, 3));
+</script>
+</body>
+</html>

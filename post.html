@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文章 · 显存制造</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
+    <nav class="nav-links" id="nav-links"></nav>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <article class="prose" id="post"></article>
+    <div style="margin-top:48px"><a class="btn btn-ghost" href="blog.html">← 返回笔记列表</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 <span class="fn-brand"></span></span>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+mountNav("blog.html");
+$$(".fn-brand").forEach(e => (e.textContent = SITE.name));
+renderPost("#post");
+</script>
+</body>
+</html>

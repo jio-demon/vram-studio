@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于 · 显存制造</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html"><span class="brand-mark"></span><span id="brand-name">显存制造</span></a>
+    <nav class="nav-links" id="nav-links"></nav>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-head"><h2>关于</h2></div>
+    <div class="about-grid">
+      <div class="prose" style="max-width:none">
+        <p id="about-intro"></p>
+        <h2>这里会更新什么</h2>
+        <ul>
+          <li>本地出图与出视频的作品，附完整提示词和参数</li>
+          <li>ComfyUI 工作流的改造记录</li>
+          <li>硬件折腾的实测数据，包括失败的那部分</li>
+        </ul>
+        <h2>联系</h2>
+        <p id="about-links"></p>
+      </div>
+      <div>
+        <div class="card-meta" style="margin-bottom:14px">主力设备</div>
+        <table class="spec-table">
+          <tr><td>显卡</td><td>RTX 2080 Ti 22GB（改装显存）</td></tr>
+          <tr><td>CPU</td><td>i7-10870H 八核</td></tr>
+          <tr><td>内存</td><td>32GB DDR4 2400</td></tr>
+          <tr><td>存储</td><td>KIOXIA 960GB + Kingston 1.44TB</td></tr>
+          <tr><td>主屏</td><td>34.7 英寸带鱼屏</td></tr>
+        </table>
+        <div class="card-meta" style="margin:28px 0 14px">常用工具</div>
+        <table class="spec-table">
+          <tr><td>出图</td><td>ComfyUI（Desktop 版）</td></tr>
+          <tr><td>出视频</td><td>MiniMax H3</td></tr>
+          <tr><td>站点</td><td>静态站 + Caddy</td></tr>
+          <tr><td>托管</td><td>腾讯云轻量 · 广州</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 <span class="fn-brand"></span></span>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+mountNav("about.html");
+$$(".fn-brand").forEach(e => (e.textContent = SITE.name));
+document.getElementById("about-intro").textContent = SITE.intro;
+document.getElementById("about-links").innerHTML = SITE.links
+  .map(l => `<a href="${l.url}" style="color:var(--accent)">${l.label}</a>`)
+  .join(" · ");
+</script>
+</body>
+</html>
