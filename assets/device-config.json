@@ -1,7 +1,7 @@
 {
   "_说明": "此文件由本地脚本自动更新，请勿手动编辑",
-  "_updated": "2026-09-22 22:43:56",
-  "tunnelUrl": "https://reasoning-soil-molecular-enforcement.trycloudflare.com",
+  "_updated": "2026-09-22 22:47:06",
+  "tunnelUrl": "https://motivation-annie-skill-verification.trycloudflare.com",
   "lanUrl": "192.168.31.200",
   "enabled": true,
   "note": "设备状态页数据源。tunnelUrl 指向本机监控服务的 Cloudflare 隧道地址，由 server/publish_to_pages.py 在服务启动时自动写入并推送到 GitHub。"
