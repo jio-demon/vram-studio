@@ -78,9 +78,14 @@ function renderPost(selector) {
   const id = new URLSearchParams(location.search).get("id");
   const p = POSTS.find(x => x.id === id) || POSTS[0];
   document.title = p.title + " · " + SITE.name;
+  const tocItems = [];
   const body = p.body
     .map(b => {
-      if (b.startsWith("## ")) return `<h2>${esc(b.slice(3))}</h2>`;
+      if (b.startsWith("## ")) {
+        const t = b.slice(3);
+        tocItems.push(t);
+        return `<h2 id="h${tocItems.length}">${esc(t)}</h2>`;
+      }
       if (b.startsWith("```")) {
         const lines = b.split("\n");
         const code = lines.slice(1, lines[lines.length - 1].trim() === "```" ? -1 : undefined).join("\n");
@@ -124,6 +129,13 @@ function renderPost(selector) {
     <div class="card-meta" style="margin-bottom:12px">${fmtDate(p.date)} · ${esc(p.category)} · 约 ${mins} 分钟</div>
     <h1>${esc(p.title)}</h1>
     ${body}${nav}`;
+  const tocEl = document.querySelector("#toc");
+  if (tocEl) {
+    tocEl.innerHTML = tocItems.length
+      ? `<div class="toc-title">本文目录</div>` +
+        tocItems.map((t, i) => `<a href="#h${i + 1}">${esc(t)}</a>`).join("")
+      : "";
+  }
 }
 
 function mountNav(active) {
@@ -150,5 +162,18 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener("click", e => {
       if (e.target === modal || e.target.classList.contains("modal-close")) closeModal();
     });
+  }
+  const progress = $("#progress");
+  const totop = $("#totop");
+  if (progress || totop) {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const total = h.scrollHeight - h.clientHeight;
+      if (progress) progress.style.width = (total > 0 ? (h.scrollTop / total) * 100 : 0) + "%";
+      if (totop) totop.classList.toggle("show", h.scrollTop > 600);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    if (totop) totop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   }
 });

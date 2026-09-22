@@ -18,6 +18,7 @@
 <section class="block">
   <div class="wrap">
     <div class="block-head"><h2>折腾笔记</h2><span class="more" id="count"></span></div>
+    <div class="filters" id="cat-filters"></div>
     <div class="post-list" id="posts"></div>
   </div>
 </section>
@@ -34,8 +35,29 @@
 <script>
 mountNav("blog.html");
 $$(".fn-brand").forEach(e => (e.textContent = SITE.name));
-renderPostList("#posts", POSTS);
-document.getElementById("count").textContent = POSTS.length + " 篇";
+
+const cats = ["全部", ...new Set(POSTS.map(p => p.category))];
+const bar = document.getElementById("cat-filters");
+bar.innerHTML = cats
+  .map((c, i) => `<button class="chip${i === 0 ? " active" : ""}" data-c="${c}">${c}</button>`)
+  .join("");
+
+function applyCat(c) {
+  const items = c === "全部" ? POSTS : POSTS.filter(p => p.category === c);
+  renderPostList("#posts", items);
+  document.getElementById("count").textContent =
+    items.length + (c === "全部" ? " 篇" : " 篇「" + c + "」");
+}
+
+$$(".chip", bar).forEach(chip => {
+  chip.addEventListener("click", () => {
+    $$(".chip", bar).forEach(x => x.classList.remove("active"));
+    chip.classList.add("active");
+    applyCat(chip.dataset.c);
+  });
+});
+
+applyCat("全部");
 </script>
 </body>
 </html>
