@@ -1,9 +1,9 @@
 const SITE = {
-  name: "显存制造",
-  handle: "VRAM Studio",
-  tagline: "用 22GB 显存，把想法渲染成画面",
+  name: "创客智造",
+  handle: "MakerMake",
+  tagline: "把想法渲染成画面",
   intro:
-    "一台改装过的 RTX 2080 Ti，一间堆满散热器的房间，和无数个等待出图的深夜。这里记录我用 ComfyUI 与 MiniMax H3 做出来的图与视频，以及一路踩过的坑。",
+    "一间堆满散热器的工作间，和无数个等待出图的深夜。这里记录我用 ComfyUI 与 MiniMax H3 做出来的图与视频，以及一路踩过的坑。",
   links: [
     { label: "GitHub", url: "#" },
     { label: "Bilibili", url: "#" },
