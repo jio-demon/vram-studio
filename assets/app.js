@@ -106,10 +106,24 @@ function renderPost(selector) {
       return `<p>${esc(b)}</p>`;
     })
     .join("");
+  const chars = p.body.join("").replace(/```/g, "").length;
+  const mins = Math.max(1, Math.round(chars / 350));
+  const idx = POSTS.findIndex(x => x.id === p.id);
+  const newer = idx > 0 ? POSTS[idx - 1] : null;
+  const older = idx < POSTS.length - 1 ? POSTS[idx + 1] : null;
+  const nav = `<nav class="post-nav">${
+    newer
+      ? `<a href="post.html?id=${newer.id}"><span>上一篇 · 较新</span>${esc(newer.title)}</a>`
+      : "<span></span>"
+  }${
+    older
+      ? `<a class="r" href="post.html?id=${older.id}"><span>下一篇 · 较旧</span>${esc(older.title)}</a>`
+      : "<span></span>"
+  }</nav>`;
   el.innerHTML = `
-    <div class="card-meta" style="margin-bottom:10px">${fmtDate(p.date)} · ${esc(p.category)}</div>
+    <div class="card-meta" style="margin-bottom:12px">${fmtDate(p.date)} · ${esc(p.category)} · 约 ${mins} 分钟</div>
     <h1>${esc(p.title)}</h1>
-    ${body}`;
+    ${body}${nav}`;
 }
 
 function mountNav(active) {
