@@ -237,6 +237,29 @@ function renderPost(selector) {
   const p = POSTS.find(x => x.id === id) || POSTS[0];
   document.title = p.title + " · " + SITE.name;
 
+  // 文章页 canonical + 分享卡片随文章变化（?id= 是同一页面，需动态设置）
+  const canonical = "https://makermake.top/post.html?id=" + p.id;
+  const setMeta = (selector, attr, value) => {
+    let el = document.head.querySelector(selector);
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute(attr.startsWith("og:") ? "property" : "name", attr);
+      document.head.appendChild(el);
+    }
+    el.setAttribute("content", value);
+  };
+  let link = document.head.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = canonical;
+  setMeta('meta[name="description"]', "description", p.excerpt);
+  setMeta('meta[property="og:title"]', "og:title", p.title);
+  setMeta('meta[property="og:description"]', "og:description", p.excerpt);
+  setMeta('meta[property="og:type"]', "og:type", "article");
+
   const { html: body, tocItems } = renderBody(p.body);
   const chars = p.body.join("").replace(/```/g, "").length;
   const mins = Math.max(1, Math.round(chars / 350));
