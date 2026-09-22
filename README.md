@@ -68,8 +68,35 @@ cd /usr/share/caddy && git pull
 
 也可以用 SFTP 直接传文件到 `/usr/share/caddy`。
 
+## 两个在线地址
+
+| 地址 | 用途 | 特点 |
+|---|---|---|
+| http://134.175.39.69/ | **主站**（腾讯云 Lighthouse · 广州） | 国内快；备案后绑 makermake.top |
+| https://jio-demon.github.io/vram-studio/ | **预览站**（GitHub Pages） | 免费、自动 HTTPS、push 即上线；国内访问不稳定 |
+
+### 关于 GitHub Pages
+
+`master` 分支根目录已配置为 Pages 源，推送后约 1 分钟自动发布。
+
+```bash
+# 查看发布状态（building → built）
+gh api repos/jio-demon/vram-studio/pages --jq '.status'
+
+# 手动触发重新发布
+gh api -X POST repos/jio-demon/vram-studio/pages/builds
+```
+
+注意事项：
+
+- `.nojekyll` 必须保留 —— 它让 Pages 跳过 Jekyll 处理，直接原样发布静态文件
+- 站内资源全部使用**相对路径**，所以部署在子目录 `/vram-studio/` 下也不会断
+- **不要把 Pages 当主站**：其 CDN 在境外，国内访客经常慢或打不开
+
 ## 已知限制
 
 - 服务器在广州，绑定自定义域名需要 ICP 备案，未备案前只能走 IP 访问
 - 没有 HTTPS，需要域名 + 备案后才能申请证书
 - 默认备份目录：`/usr/share/caddy-bak`（原 Caddy 默认页）
+- 页面 `<link rel="canonical">` 目前指向 `https://makermake.top/`，
+  域名解析 + 备案完成前该地址不可访问，属预期
