@@ -146,8 +146,9 @@ section.block { padding: 72px 0; }
   border-radius: 10px; padding: 16px; overflow-x: auto; font-size: 13px; line-height: 1.65;
 }
 .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.prose ul { color: #cfd5e0; padding-left: 22px; }
+.prose ul, .prose ol { color: #cfd5e0; padding-left: 22px; }
 .prose li { margin-bottom: 8px; }
+.prose pre code { color: #b9c1cf; font-size: 13px; }
 
 .modal {
   position: fixed; inset: 0; z-index: 100;

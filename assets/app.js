@@ -81,14 +81,27 @@ function renderPost(selector) {
   const body = p.body
     .map(b => {
       if (b.startsWith("## ")) return `<h2>${esc(b.slice(3))}</h2>`;
+      if (b.startsWith("```")) {
+        const lines = b.split("\n");
+        const code = lines.slice(1, lines[lines.length - 1].trim() === "```" ? -1 : undefined).join("\n");
+        return `<pre><code>${esc(code)}</code></pre>`;
+      }
       if (b.includes("\n- ")) {
         const [head, ...rest] = b.split("\n");
         const items = rest.filter(x => x.startsWith("- ")).map(x => `<li>${esc(x.slice(2))}</li>`).join("");
         return `<p>${esc(head)}</p><ul>${items}</ul>`;
       }
-      if (/^\d\.\s/.test(b)) {
-        const items = b.split("\n").filter(Boolean).map(x => `<li>${esc(x.replace(/^\d\.\s/, ""))}</li>`).join("");
-        return `<ul>${items}</ul>`;
+      const lines = b.split("\n");
+      if (lines.length > 1 && lines.every(l => /^\d+\.\s/.test(l.trim()))) {
+        return `<ol>${lines.map(x => `<li>${esc(x.replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`;
+      }
+      if (lines.length > 1 && lines.slice(1).every(l => /^\d+\.\s/.test(l.trim()))) {
+        const items = lines.slice(1).map(x => `<li>${esc(x.replace(/^\d+\.\s/, ""))}</li>`).join("");
+        return `<p>${esc(lines[0])}</p><ol>${items}</ol>`;
+      }
+      if (lines.length > 1 && lines.slice(1).every(l => l.startsWith("- "))) {
+        const items = lines.slice(1).map(x => `<li>${esc(x.slice(2))}</li>`).join("");
+        return `<p>${esc(lines[0])}</p><ul>${items}</ul>`;
       }
       return `<p>${esc(b)}</p>`;
     })
