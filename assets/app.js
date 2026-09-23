@@ -383,6 +383,7 @@ function mountNav(active) {
     ["index.html", "首页"],
     ["works.html", "作品"],
     ["blog.html", "笔记"],
+    ["device.html", "设备"],
     ["about.html", "关于"]
   ];
   nav.innerHTML = items
