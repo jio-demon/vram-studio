@@ -779,8 +779,64 @@ section.block.tight { padding-top: 0; }
   opacity: 0.55;
   font-size: 0.85em;
 }
+.prose h3 {
+  font-size: var(--fs-lg);
+  margin: var(--sp-8) 0 var(--sp-3);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.008em;
+}
 .prose p { margin: 0 0 var(--sp-5); }
 .prose strong { color: var(--text); font-weight: 600; }
+.prose p > code,
+.prose li > code {
+  font-size: 0.9em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--accent-hi);
+}
+
+/* ---------- 数据表格 ---------- */
+.table-scroll {
+  margin: 0 0 var(--sp-6);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  -webkit-overflow-scrolling: touch;
+}
+.table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  min-width: 520px;
+}
+.table-scroll th {
+  padding: 11px 14px;
+  font-weight: 600;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--text);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.table-scroll td {
+  padding: 10px 14px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.table-scroll tbody tr:last-child td { border-bottom: none; }
+.table-scroll tbody tr { transition: background var(--t-fast); }
+.table-scroll tbody tr:hover { background: var(--surface-2); }
+
+/* 涨跌着色：涨红跌绿。用法：正文里写 <span class="num-up">+37%</span>
+   —— 不做全局正则自动着色，避免把「内存 -17%」这类普通描述误判 */
+.num-up { color: #e5484d; font-weight: 600; }
+.num-down { color: #2fbf71; font-weight: 600; }
 .prose a:not(.btn) {
   color: var(--accent-hi);
   border-bottom: 1px solid var(--accent-line);
