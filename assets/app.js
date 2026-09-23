@@ -188,13 +188,57 @@ function renderPostList(selector, items) {
 
 /* ---------- 正文渲染 ---------- */
 
+/* Markdown 表格：`| a | b |` 连续两行以上，第二行为分隔行 */
+function isTableBlock(b) {
+  const lines = b.split("\n").map(l => l.trim()).filter(Boolean);
+  return lines.length >= 2 && lines.every(l => l.startsWith("|")) &&
+    /^\|[\s:|-]+\|$/.test(lines[1]) && lines[1].includes("-");
+}
+
+function renderTable(b) {
+  const cells = l => l.replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+  const lines = b.split("\n").map(l => l.trim()).filter(Boolean);
+  const head = cells(lines[0]);
+  const rows = lines.slice(2).map(cells);
+  const aligns = cells(lines[1]).map(a =>
+    a.endsWith(":") && a.startsWith(":") ? "center" : a.endsWith(":") ? "right" : "left");
+  const th = head.map((h, i) => `<th style="text-align:${aligns[i] || "left"}">${inline(h)}</th>`).join("");
+  const tb = rows.map(r =>
+    `<tr>${r.map((c, i) => `<td style="text-align:${aligns[i] || "left"}">${inline(c)}</td>`).join("")}</tr>`
+  ).join("");
+  return `<div class="table-scroll"><table><thead><tr>${th}</tr></thead><tbody>${tb}</tbody></table></div>`;
+}
+
+/* 行内标记：**粗体** / `代码` / 允许极少量白名单内联标签（如涨跌着色）
+   注意：先放行白名单标签，再对剩余内容做转义，否则标签会被 esc() 打成实体 */
+const INLINE_ALLOW = ["span", "kbd", "strong", "em", "code", "br"];
+
+function inline(s) {
+  const store = [];
+  let t = String(s).replace(
+    /<\/?([a-zA-Z0-9]+)(?:\s[^>]*)?>/g,
+    (m, tag) => {
+      if (!INLINE_ALLOW.includes(tag.toLowerCase())) return m;
+      store.push(m);
+      return "\u0000" + (store.length - 1) + "\u0000";
+    }
+  );
+  t = esc(t)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+  return t.replace(/\u0000(\d+)\u0000/g, (_, i) => store[+i]);
+}
+
 function renderBody(blocks) {
   const tocItems = [];
   const html = blocks.map(b => {
+    if (b.startsWith("### ")) {
+      return `<h3>${inline(b.slice(4))}</h3>`;
+    }
     if (b.startsWith("## ")) {
       const t = b.slice(3);
       tocItems.push(t);
-      return `<h2 id="h${tocItems.length}">${esc(t)}</h2>`;
+      return `<h2 id="h${tocItems.length}">${inline(t)}</h2>`;
     }
     if (b.startsWith("```")) {
       const lines = b.split("\n");
@@ -203,29 +247,30 @@ function renderBody(blocks) {
       return `<pre><code>${esc(code)}</code><button class="copy-code" type="button" data-code="${esc(code)}">复制</button></pre>`;
     }
     if (b.startsWith("> ")) {
-      return `<blockquote>${esc(b.slice(2))}</blockquote>`;
+      return `<blockquote>${inline(b.slice(2))}</blockquote>`;
     }
+    if (isTableBlock(b)) return renderTable(b);
     const lines = b.split("\n");
 
     if (lines.length > 1 && lines.every(l => /^-\s/.test(l.trim()))) {
-      return `<ul>${lines.map(x => `<li>${esc(x.trim().slice(2))}</li>`).join("")}</ul>`;
+      return `<ul>${lines.map(x => `<li>${inline(x.trim().slice(2))}</li>`).join("")}</ul>`;
     }
     if (lines.length > 1 && lines.every(l => /^\d+\.\s/.test(l.trim()))) {
-      return `<ol>${lines.map(x => `<li>${esc(x.trim().replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`;
+      return `<ol>${lines.map(x => `<li>${inline(x.trim().replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`;
     }
     // 首行是段落、其后为列表
     const rest = lines.slice(1);
     if (rest.length && rest.every(l => /^-\s/.test(l.trim()))) {
-      return `<p>${esc(lines[0])}</p><ul>${rest.map(x => `<li>${esc(x.trim().slice(2))}</li>`).join("")}</ul>`;
+      return `<p>${inline(lines[0])}</p><ul>${rest.map(x => `<li>${inline(x.trim().slice(2))}</li>`).join("")}</ul>`;
     }
     if (rest.length && rest.every(l => /^\d+\.\s/.test(l.trim()))) {
-      return `<p>${esc(lines[0])}</p><ol>${rest.map(x => `<li>${esc(x.trim().replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`;
+      return `<p>${inline(lines[0])}</p><ol>${rest.map(x => `<li>${inline(x.trim().replace(/^\d+\.\s/, ""))}</li>`).join("")}</ol>`;
     }
     if (b.includes("\n- ")) {
       const [head, ...r] = b.split("\n");
-      return `<p>${esc(head)}</p><ul>${r.filter(x => x.trim().startsWith("- ")).map(x => `<li>${esc(x.trim().slice(2))}</li>`).join("")}</ul>`;
+      return `<p>${inline(head)}</p><ul>${r.filter(x => x.trim().startsWith("- ")).map(x => `<li>${inline(x.trim().slice(2))}</li>`).join("")}</ul>`;
     }
-    return `<p>${esc(b)}</p>`;
+    return `<p>${inline(b)}</p>`;
   }).join("");
   return { html, tocItems };
 }
@@ -338,7 +383,6 @@ function mountNav(active) {
     ["index.html", "首页"],
     ["works.html", "作品"],
     ["blog.html", "笔记"],
-    ["device.html", "设备"],
     ["about.html", "关于"]
   ];
   nav.innerHTML = items
