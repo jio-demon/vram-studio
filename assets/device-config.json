@@ -1,7 +1,7 @@
 {
   "_说明": "此文件由本地脚本自动更新，请勿手动编辑",
-  "_updated": "2026-09-24 12:41:36",
-  "tunnelUrl": "https://than-helmet-assessing-budapest.trycloudflare.com",
+  "_updated": "2026-09-24 12:43:47",
+  "tunnelUrl": "https://frame-reveals-lanka-fantasy.trycloudflare.com",
   "lanUrl": "192.168.31.200",
   "enabled": true,
   "note": "设备状态页数据源。tunnelUrl 指向本机监控服务的 Cloudflare 隧道地址，由 server/publish_to_pages.py 在服务启动时自动写入并推送到 GitHub。"
