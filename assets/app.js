@@ -255,11 +255,16 @@ function renderBody(blocks) {
     if (b.startsWith("> ")) {
       return `<blockquote>${inline(b.slice(2))}</blockquote>`;
     }
-    // 独立图片块：![图注](路径)，渲染为 figure，图注非空时显示
+    // 独立媒体块：![图注](路径)，渲染为 figure，图注非空时显示；
+    // .mp4/.webm 结尾渲染为 <video>，其余按 <img> 处理
     const fig = b.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
     if (fig) {
       const [, cap, src] = fig;
-      return `<figure class="post-img"><img src="${esc(src)}" alt="${esc(cap)}" loading="lazy" decoding="async">${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}</figure>`;
+      const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+      const media = isVideo
+        ? `<video controls playsinline preload="metadata" src="${esc(src)}" style="width:100%;height:auto;display:block;background:#000;border-radius:inherit"></video>`
+        : `<img src="${esc(src)}" alt="${esc(cap)}" loading="lazy" decoding="async">`;
+      return `<figure class="post-img">${media}${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}</figure>`;
     }
     if (isTableBlock(b)) return renderTable(b);
     const lines = b.split("\n");
