@@ -249,6 +249,12 @@ function renderBody(blocks) {
     if (b.startsWith("> ")) {
       return `<blockquote>${inline(b.slice(2))}</blockquote>`;
     }
+    // 独立图片块：![图注](路径)，渲染为 figure，图注非空时显示
+    const fig = b.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
+    if (fig) {
+      const [, cap, src] = fig;
+      return `<figure class="post-img"><img src="${esc(src)}" alt="${esc(cap)}" loading="lazy" decoding="async">${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}</figure>`;
+    }
     if (isTableBlock(b)) return renderTable(b);
     const lines = b.split("\n");
 

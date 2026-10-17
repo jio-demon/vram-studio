@@ -1459,3 +1459,21 @@ footer {
   body { background: #fff; color: #000; }
   .prose { max-width: none; }
 }
+
+/* ---------- 文章内插图 ---------- */
+.prose figure.post-img {
+  margin: var(--sp-8) 0;
+}
+.prose figure.post-img img {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.prose figure.post-img figcaption {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm, 13px);
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
