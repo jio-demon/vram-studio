@@ -28,6 +28,21 @@ assets/works/w1.jpg  ~  w6.jpg
 
 ## 加一件新作品
 
+### 推荐：用上传台
+
+双击 `../tools/upload/启动上传台.bat`（工具在站点仓库外，不会被发布），
+浏览器会自动打开本地页面：把图拖进去、填标题、点「保存并发布上线」。
+
+它自动完成这些事：
+
+- 图片压成 WebP（最长边 1600px，单张压到 200KB 以内），保持原始宽高比
+- 自动分配 id（w7、w8…），写进 `assets/data.js` 底部的自动维护区
+- `git add` + `commit` + `push` 到 GitHub
+
+发布后：GitHub Pages 约 1 分钟更新；腾讯云主站由服务器上的 cron 每 5 分钟自动拉取。
+
+### 手工加（也可以）
+
 在 `assets/data.js` 的 `WORKS` 数组里追加一项：
 
 ```js
@@ -39,6 +54,7 @@ assets/works/w1.jpg  ~  w6.jpg
   model: "使用的模型",
   tags: ["标签"],
   file: "assets/works/w7.jpg",
+  ratio: "1024 / 1024",     // 可选：真实宽高比，不写则图像按 1:1、视频按 16:9
   prompt: "完整提示词",
   params: { 采样器: "DPM++ 2M Karras", 步数: "32", CFG: "6.5", 分辨率: "1344x768" },
   note: "一句话手记"
@@ -46,6 +62,38 @@ assets/works/w1.jpg  ~  w6.jpg
 ```
 
 `params` 的键可以任意增减，页面会自动渲染。
+
+视频作品额外需要一个 `video` 字段指向视频文件，`file` 则指向封面图；
+详情弹层会渲染成播放器（封面作为 poster）。例如：
+
+```js
+{
+  id: "w8",
+  title: "机械蜂鸟",
+  type: "video",
+  file: "assets/works/w8-cover.webp",   // 卡片与封面
+  video: "assets/works/w8.mp4",         // 点开播放
+  ratio: "1280 / 720"
+}
+```
+
+## 自动同步主站
+
+服务器上有一条 cron，每 5 分钟把 GitHub 上的最新提交同步到 `/usr/share/caddy`：
+
+```
+*/5 * * * * cd /opt/site-mirror && git fetch -q origin master \
+  && git merge --ff-only -q origin/master \
+  && rsync -a --delete --exclude=.git . /usr/share/caddy/
+```
+
+所以正常流程只有一步：**push 上去，两边都会自己更新**。
+
+需要立刻生效时，手动跑一次：
+
+```bash
+cd /opt/site-mirror && git pull && rsync -a --delete --exclude=.git . /usr/share/caddy/
+```
 
 ## 写一篇新文章
 
@@ -55,18 +103,6 @@ assets/works/w1.jpg  ~  w6.jpg
 - 以 `## ` 开头 → 小标题
 - 含换行 + `- ` → 段落 + 无序列表
 - 以 `1. ` 开头 → 有序列表
-
-## 更新到服务器
-
-站点文件在服务器的 `/usr/share/caddy`，Caddy 直接托管，改完文件即刻生效。
-
-从 GitHub 同步（本仓库是源文件）：
-
-```bash
-cd /usr/share/caddy && git pull
-```
-
-也可以用 SFTP 直接传文件到 `/usr/share/caddy`。
 
 ## 两个在线地址
 

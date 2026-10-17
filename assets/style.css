@@ -1074,12 +1074,15 @@ section.block.tight { padding-top: 0; }
   justify-content: center;
   min-height: 260px;
 }
-.modal-media img {
+.modal-media img,
+.modal-media video {
   width: 100%;
   height: auto;
   max-height: 88vh;
   object-fit: contain;
+  display: block;
 }
+.modal-media video { background: #000; }
 
 .modal-info {
   padding: var(--sp-8) var(--sp-8) var(--sp-8);
@@ -1430,7 +1433,8 @@ footer {
     height: 100dvh;
     border: none;
   }
-  .modal-media img { max-height: 46dvh; }
+  .modal-media img,
+  .modal-media video { max-height: 46dvh; }
   .modal-info { padding: var(--sp-6) var(--sp-5) var(--sp-10); }
   .modal-close { position: fixed; top: var(--sp-3); right: var(--sp-3); }
   .modal-hint { display: none; }

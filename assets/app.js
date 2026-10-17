@@ -21,8 +21,8 @@ let modalList = [];        // 当前弹层可切换的作品集合
 let modalIndex = -1;       // 当前索引
 
 function workCard(w) {
-  // 视频类作品按 16:9 呈现，图像按 1:1 —— 匹配素材真实比例，避免裁切
-  const ratio = w.type === "video" ? "16 / 9" : "1 / 1";
+  // 优先用作品自带的真实比例（上传台会写入），老数据回退到类型默认比例
+  const ratio = w.ratio || (w.type === "video" ? "16 / 9" : "1 / 1");
   const label = w.type === "video" ? "视频" : "图像";
   return `
     <article class="card" data-id="${esc(w.id)}" tabindex="0" role="button"
@@ -83,8 +83,14 @@ function openModal(id) {
     .map(t => `<span class="tag">${esc(t)}</span>`)
     .join("");
 
+  // 有视频源就放播放器（封面做 poster），否则显示图片
+  const media = w.video
+    ? `<video src="${esc(w.video)}" poster="${esc(w.file)}" controls playsinline
+              preload="metadata" aria-label="${esc(w.title)}"></video>`
+    : `<img src="${esc(w.file)}" alt="${esc(w.title)}">`;
+
   $("#modal-body").innerHTML = `
-    <div class="modal-media"><img src="${esc(w.file)}" alt="${esc(w.title)}"></div>
+    <div class="modal-media">${media}</div>
     <div class="modal-info">
       <h3 id="modal-title">${esc(w.title)}</h3>
       <div class="card-meta" style="margin-top:6px">${fmtDate(w.date)} · ${esc(w.model)}</div>
