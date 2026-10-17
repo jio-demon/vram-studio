@@ -435,7 +435,7 @@ const POSTS = [
 ];
 
 /* === 上传台自动维护区 START（请勿手改，重装会覆盖） === */
-// 由作品上传台写入，共 1 条。区块被删除后，工具会重建。
+// 由作品上传台写入，共 3 条。区块被删除后，工具会重建。
 WORKS.unshift(
   {
     id: "w9",
@@ -446,6 +446,34 @@ WORKS.unshift(
     tags: [],
     file: "assets/works/w9.webp",
     ratio: "1184 / 888",
+    prompt: "",
+    params: {},
+    note: ""
+  },
+  {
+    id: "w7",
+    title: "e665f28775bb68736c59136cd31c649e",
+    type: "video",
+    date: "2026-10-18",
+    model: "",
+    tags: [],
+    file: "assets/works/w7-cover.webp",
+    video: "assets/works/w7.mp4",
+    ratio: "720 / 1248",
+    prompt: "",
+    params: {},
+    note: ""
+  },
+  {
+    id: "w8",
+    title: "a8d60df276e39bd19642a41aea42f5e6",
+    type: "video",
+    date: "2026-10-18",
+    model: "",
+    tags: [],
+    file: "assets/works/w8-cover.webp",
+    video: "assets/works/w8.mp4",
+    ratio: "1280 / 732",
     prompt: "",
     params: {},
     note: ""
