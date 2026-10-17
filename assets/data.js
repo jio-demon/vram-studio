@@ -435,8 +435,21 @@ const POSTS = [
 ];
 
 /* === 上传台自动维护区 START（请勿手改，重装会覆盖） === */
-// 由作品上传台写入，共 2 条。区块被删除后，工具会重建。
+// 由作品上传台写入，共 3 条。区块被删除后，工具会重建。
 WORKS.unshift(
+  {
+    id: "w9",
+    title: "Krea2 turbo 00003",
+    type: "image",
+    date: "2026-10-18",
+    model: "",
+    tags: [],
+    file: "assets/works/w9.webp",
+    ratio: "1184 / 888",
+    prompt: "",
+    params: {},
+    note: ""
+  },
   {
     id: "w7",
     title: "e665f28775bb68736c59136cd31c649e",
