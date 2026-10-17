@@ -439,7 +439,7 @@ const POSTS = [
 WORKS.unshift(
   {
     id: "w9",
-    title: "Krea2 turbo 00003",
+    title: "白昼下的机能服",
     type: "image",
     date: "2026-10-18",
     model: "",
@@ -452,7 +452,7 @@ WORKS.unshift(
   },
   {
     id: "w7",
-    title: "e665f28775bb68736c59136cd31c649e",
+    title: "湖边的夏日傍晚",
     type: "video",
     date: "2026-10-18",
     model: "",
@@ -466,7 +466,7 @@ WORKS.unshift(
   },
   {
     id: "w8",
-    title: "a8d60df276e39bd19642a41aea42f5e6",
+    title: "黑风衣下的沉默",
     type: "video",
     date: "2026-10-18",
     model: "",
