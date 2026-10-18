@@ -83,6 +83,12 @@ function openModal(id) {
     .map(t => `<span class="tag">${esc(t)}</span>`)
     .join("");
 
+  // 参考图：生成这条视频时喂给模型的素材
+  const refs = (w.refs || [])
+    .map((src, i) => `<a class="ref-item" href="${esc(src)}" target="_blank" rel="noopener"
+        title="打开参考图 ${i + 1}"><img src="${esc(src)}" alt="参考图 ${i + 1}" loading="lazy"></a>`)
+    .join("");
+
   // 有视频源就放播放器（封面做 poster），否则显示图片
   const media = w.video
     ? `<video src="${esc(w.video)}" poster="${esc(w.file)}" controls playsinline
@@ -95,6 +101,9 @@ function openModal(id) {
       <h3 id="modal-title">${esc(w.title)}</h3>
       <div class="card-meta" style="margin-top:6px">${fmtDate(w.date)} · ${esc(w.model)}</div>
       ${tags ? `<div class="modal-tags">${tags}</div>` : ""}
+
+      ${refs ? `<div class="modal-section-label">参考图 ${(w.refs || []).length}</div>
+                <div class="modal-refs">${refs}</div>` : ""}
 
       <div class="modal-section-label">生成参数</div>
       <dl class="kv">${params}</dl>
